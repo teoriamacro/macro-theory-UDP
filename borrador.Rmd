@@ -1,0 +1,60 @@
+PARTE III
+
+Para esta última parte el ejercicio es similar a la primera. Yo recopilé datos del banco central de Chile, la primera base de datos consiste en datos anuales desde 1995 hasta 2011 de la base monetaria en Chile. Presentaré los primeros comandos al igual que en las partes anteriores
+
+```{r}
+library(ggplot2)
+library(tables)
+library(knitr)
+library(rdatamarket)
+library(RODBC)
+library(gdata)
+booktabs()
+```
+
+
+Esto como mencionamos anteriormente para habilitar los comandos que contienen las funciones necesarias.
+
+```{r}
+datosbc=read.table("Cuadrobc.csv",header=F,sep=";",quote="")
+datosbc=datosbc[ ,1:2]
+datosbc=datosbc[3:19,1:2]
+names(datosbc)=c("year","basemonetaria")
+View(datosbc)
+```
+
+Al igual que en la parte I acá presento los comandos para leer la base y el segundo y tercer comando consisten en modificar la base en cantidad de filas y columnas que son necesarias dado el fin del ejercicio y tener datos mejor ordenados, el cuarto comando entrega nombre a las variables. Ahora vienen los gráficos y la tabla donde se muestran estadisticos.
+
+```{r fig.width=7, fig.height=6}
+plot1=qplot(year,basemonetaria, data=datosbc)
+print(plot1)
+```
+
+```{r}
+mitabla1=tabular( (row.names + 1) ~ (n=1) + Format(digits=2)*(year + basemonetaria)*(mean+sd), data= na.omit(datosbc))
+```
+
+Finalmente presentaré lo mismo que antes pero ahora la variable es la TPM en Chile, los datos son una muestra desde 1995 hasta 2011 al igual que con la base anterior, a continuación mostraré los comandos corrspondientes.
+
+```{r}
+datostpm=read.table("CuadroTPM.csv",header=F,sep=";",quote="")
+datostpm=datostpm[2:19, ]
+datostpm=datostpm[2:19,1:3]
+names(datostpm)=c("year","tpm")
+View(datostpm)
+```
+
+Y los comandos para graficar el tiempo vs la TPM.
+
+```{r fig.width=7, fig.height=6}
+plot2=qplot(year,tpm, data=datostpm)
+print(plot2)
+```
+
+```{r}
+mitabla2 =tabular( (row.names + 1) ~ (n=1) + Format(digits=2)*(year + tpm)*(mean+sd), data= na.omit(datostpm))
+```
+
+Con esto finalmente concluimos los ejercicios.
+
+

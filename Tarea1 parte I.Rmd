@@ -1,0 +1,45 @@
+PARTE I
+
+En esta primera parte consiste en visualizar la base de datos de la world penn table. Para comenzar, mostraremos los primeros comandos, los cuales son:
+
+```{r}
+library(ggplot2)
+library(tables)
+library(knitr)
+library(rdatamarket)
+booktabs()
+```
+
+Esas primeras instrucciones se utilizan para activar los paquetes en los cuales se utilizan funciones para realizar las actividades posteriores en este ejercicio.
+
+
+```{r}
+pwdata <- read.csv("pwt71_w_country_names.csv")
+selectediso = c("MEX","COL", "VEN") ;
+myselection=subset(pwdata,isocode %in% selectediso)# 
+myselection = droplevels(myselection)
+View(myselection)
+```
+
+La primera instruccion son para leer los datos del penn world table, en las siguientes se selecciona la base de datos solo para Mexico Colombia y Venezuela. Y en la última es para ver la seleccion de países elegidos. 
+A continuación presentaré los gráficos de series de tiempo, del GDP per cápita a PPP, el consumo per cápita kc y la inversión per capita ki.
+
+
+
+```{r fig.width=7, fig.height=6}
+plot1=qplot(year,rgdpch, data=myselection,geom= "path", colour=country)
+print(plot1)
+
+plot2=qplot(year,kc, data=myselection,geom= "path", colour=country)
+print(plot2)
+
+plot3=qplot(year,ki, data=myselection,geom= "path", colour=country)
+print(plot3)
+```
+
+Finalmente para esta primera parte presentaré una tabla con estadisticos como media y varianza de las variables consumo per cápita e inversión per cápita
+
+
+```{r}
+mitabla = tabular( (country + 1) ~ (n=1) + Format(digits=2)*(kc + ki)*(mean+sd), data= na.omit(myselection))
+```
